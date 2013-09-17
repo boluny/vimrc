@@ -1,8 +1,6 @@
 set nu
 syntax enable
 
-filetype plugin indent on
-
 set nocompatible               " be iMproved
  filetype off                   " required!
 
@@ -21,11 +19,15 @@ Bundle 'AutoClose'
 Bundle 'Tagbar'
 Bundle 'Solarized'		
 
+filetype plugin indent on
 " General configuration
 
-set guifont=Dejavu\ Sans\ Mono:h11
-set bg=light
-colorscheme solarized
+"colorscheme desert
+if has('gui_running')
+    set guifont=Dejavu\ Sans\ Mono:h11
+    set bg=light
+    colorscheme solarized
+endif
 
 set incsearch
 set hlsearch
