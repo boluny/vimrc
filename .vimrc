@@ -1,39 +1,48 @@
 set nu
 syntax enable
+set encoding=utf-8
+source $VIMRUNTIME/delmenu.vim
+source $VIMRUNTIME/menu.vim
+language messages zh_CN.utf-8
 
 set nocompatible               " be iMproved
- filetype off                   " required!
+filetype off                   " required!
 
- set rtp+=~/.vim/bundle/vundle/
- call vundle#rc()
+set rtp+=$VIM/vimfiles/bundle/vundle/
+call vundle#rc()
 
- " let Vundle manage Vundle
- " required! 
+" let Vundle manage Vundle
+" required! 
 Bundle 'gmarik/vundle'
 
 " my customized plugins
 Bundle 'The-NERD-tree'
 Bundle 'ctags.vim'
 Bundle 'TabBar'
-Bundle 'AutoClose'
 Bundle 'Tagbar'
 Bundle 'Solarized'		
 
-filetype plugin indent on
-" General configuration
+" for javascript related plugins
+Bundle 'pangloss/vim-javascript'
+Bundle 'mattn/emmet-vim'
 
-"colorscheme desert
+
+filetype plugin indent on
+
+" General configuration
 if has('gui_running')
     set guifont=Dejavu\ Sans\ Mono:h11
-    set bg=light
+    set bg=dark
     colorscheme solarized
+    " set the cursor looking in insert and command insert mode
+    " see :help guicursor for further help
+    set guicursor=i-ci:block-Cursor/lCursor
 endif
 
+" configure the search preferences
 set incsearch
 set hlsearch
 
-set autoindent
-set smartindent
 set smarttab
 set shiftwidth=4
 set softtabstop=4
@@ -42,8 +51,27 @@ set expandtab
 set wildmenu wildmode=longest,list:full
 set showmatch
 
+" if set indent, the backspace should be set to 2, equal to 
+" indent,eol, start, see `:help 'backspace'`
+set autoindent
+set smartindent
+set backspace=indent,eol,start
+
+" Configuration for javascript, use C-x C-o to trigger
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+
+" Configuration for emmet.vim, the default trigger shortcut 
+" is C-y , 
+let g:user_emmet_install_global = 0
+autocmd FileType html,css EmmetInstall
+
+let Tlist_JS_Settings = 'javascript;s:string;a:array;o:object;f:function'
+
+nmap <F8> :TagbarToggle<CR>
+
 " key maps
 noremap <C-n> :NERDTreeToggle<CR>
+noremap <silent> <C-b> :exe ':silent !firefox %' <CR>
 
 function! s:CloseIfOnlyNerdTreeLeft()
   if exists("t:NERDTreeBufName")
