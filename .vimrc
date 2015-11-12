@@ -8,7 +8,15 @@ language messages zh_CN.utf-8
 set nocompatible               " be iMproved
 filetype off                   " required!
 
-set rtp+=$VIM/vimfiles/bundle/vundle/
+if has("win32") || has("win64")
+    " that is for windows
+    " there is a win32unix for Cygwin configuration
+    set rtp+=$VIM/vimfiles/bundle/vundle/
+else 
+    " that's for Linux
+    set rtp+=~/.vim/bundle/vundle/
+endif
+
 call vundle#rc()
 
 " let Vundle manage Vundle
