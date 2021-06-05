@@ -26,10 +26,13 @@ Plugin 'VundleVim/Vundle.vim'
 " my customized plugins
 Plugin 'The-NERD-tree'
 Plugin 'ctags.vim'
-Plugin 'TabBar'
+" Plugin 'TabBar'
 Plugin 'Tagbar'
 Plugin 'Solarized'		
+Plugin 'molokai'
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 "Plugin 'SirVer/ultisnips'
 
 " for javascript related plugins
@@ -56,6 +59,8 @@ else
     colorscheme desert
 endif
 
+set term=rxvt-unicode-256color
+
 " configure the search preferences
 set incsearch
 set hlsearch
@@ -69,6 +74,8 @@ set tabstop=4
 set expandtab
 set wildmenu wildmode=longest,list:full
 set showmatch
+" prevent the scrach window to appear
+"set completeopt-=preview
 
 " if set indent, the backspace should be set to 2, equal to 
 " indent,eol, start, see `:help 'backspace'`
@@ -84,18 +91,35 @@ autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 " is C-y , 
 let g:user_emmet_install_global = 0
 autocmd FileType html,css EmmetInstall
+autocmd BufNewFile,BufReadPost *.cc,*.C set filetype=cpp
 
 let Tlist_JS_Settings = 'javascript;s:string;a:array;o:object;f:function'
 
 " Configuration for YouCompleteMe
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = 0
+let g:ycm_add_preview_to_completeopt = 1
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_key_invoke_completion = '<C-n>'
+let g:ycm_use_clangd = 1
 
+" Configuration for vim-airline
+set laststatus=2
+let g:airline_theme="papercolor" 
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
+
+" Configuration for Tagbar
 nmap <F8> :TagbarToggle<CR>
 
 " key maps
 noremap <C-n> :NERDTreeToggle<CR>
-noremap <silent> <C-b> :exe ':silent !firefox %' <CR>
+noremap <M-F7> :YcmCompleter GoToReferences<CR>
+" noremap <silent> <C-b> :exe ':silent !firefox %' <CR>
+nmap <C-l> :bn<CR>
+nmap <C-h> :bp<CR>
 
 function! s:CloseIfOnlyNerdTreeLeft()
   if exists("t:NERDTreeBufName")
