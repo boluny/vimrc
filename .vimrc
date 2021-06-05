@@ -7,41 +7,43 @@ source $VIMRUNTIME/menu.vim
 set nocompatible               " be iMproved
 filetype off                   " required!
 
-if has("win32") || has("win64")
-    " that is for windows
-    " there is a win32unix for Cygwin configuration
-    set rtp+=$VIM/vimfiles/bundle/Vundle.vim
-language messages zh_CN.utf-8
-else 
-    " that's for Linux
-    set rtp+=~/.vim/bundle/Vundle.vim
-endif
+" if has("win32") || has("win64")
+"     " that is for windows
+"     " there is a win32unix for Cygwin configuration
+"     set rtp+=$VIM/vimfiles/bundle/Vundle.vim
+" language messages zh_CN.utf-8
+" else 
+"     " that's for Linux
+"     set rtp+=~/.vim/bundle/Vundle.vim
+" endif
 
-call vundle#begin()
+call plug#begin('~/.vim/plugged')
 
 " let Vundle manage Vundle
 " required! 
-Plugin 'VundleVim/Vundle.vim'
+" Plugin 'gmarik/Vundle.vim'
 
 " my customized plugins
-Plugin 'The-NERD-tree'
-Plugin 'ctags.vim'
+Plug 'preservim/nerdtree'
+Plug 'vim-scripts/ctags.vim'
 " Plugin 'TabBar'
-Plugin 'Tagbar'
-Plugin 'Solarized'		
-Plugin 'molokai'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+Plug 'majutsushi/Tagbar'
+" Plug 'Solarized'		
+Plug 'joshdick/onedark.vim'
+Plug 'tomasr/molokai'
+Plug 'Valloric/YouCompleteMe'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 "Plugin 'SirVer/ultisnips'
 
 " for javascript related plugins
-Plugin 'pangloss/vim-javascript'
-Plugin 'mattn/emmet-vim'
+Plug 'pangloss/vim-javascript'
+Plug 'mattn/emmet-vim'
 
-call vundle#end()
+call plug#end()
 
 filetype plugin indent on
+
 
 " General configuration
 if has('gui_running')
@@ -52,11 +54,24 @@ if has('gui_running')
     endif
     set bg=dark
     colorscheme solarized
-    " set the cursor looking in insert and command insert mode
+    " set the cursor icon looks like in 'insert' and 'command insert' mode
     " see :help guicursor for further help
     set guicursor=i-ci:block-Cursor/lCursor
 else 
-    colorscheme desert
+    " onedark.vim override: Don't set a background color when running in a terminal;
+    " just use the terminal's background color
+    " `gui` is the hex color code used in GUI mode/nvim true-color mode
+    " `cterm` is the color code used in 256-color mode
+    " `cterm16` is the color code used in 16-color mode
+    if (has("autocmd") && !has("gui_running"))
+      augroup colorset
+        autocmd!
+        let s:white = { "gui": "#ABB2BF", "cterm": "145", "cterm16" : "7" }
+        autocmd ColorScheme * call onedark#set_highlight("Normal", { "fg": s:white }) " `bg` will not be styled since there is no `bg` setting
+      augroup END
+    endif
+    colorscheme onedark
+    "colorscheme desert
 endif
 
 set term=rxvt-unicode-256color
